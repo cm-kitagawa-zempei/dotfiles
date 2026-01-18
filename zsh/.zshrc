@@ -90,14 +90,7 @@ export FZF_CTRL_T_OPTS='--preview "if [ -d {} ]; then eza --tree --level=2 --ico
 # ============================================================================
 
 # fzf-git.shを読み込み（高度なGit操作をfzfで行う）
-# 使用可能なキーバインド:
-# - Ctrl+G + Ctrl+F : ファイル選択
-# - Ctrl+G + Ctrl+B : ブランチ選択
-# - Ctrl+G + Ctrl+T : タグ選択
-# - Ctrl+G + Ctrl+H : コミット履歴選択
-# - Ctrl+G + Ctrl+R : リモート選択
-# - Ctrl+G + Ctrl+S : stash選択
-source ~/.fzf-git.sh
+# Nix管理に移行
 
 # Ctrl+Gのsend-break（入力キャンセル）を無効化
 # これによりfzf-gitのキーバインドが正常に動作する
