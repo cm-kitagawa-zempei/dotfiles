@@ -29,9 +29,8 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 # PostgreSQL (libpq) のパスを通す
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/kitagawa_zempei/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+# Rancher Desktopのパスを通す
+export PATH="$HOME/.rd/bin:$PATH"
 
 # ============================================================================
 # コマンド履歴設定
@@ -226,13 +225,13 @@ alias snowsql=/Applications/SnowSQL.app/Contents/MacOS/snowsql
 export PATH="$HOME/.local/bin:$PATH"
 
 # Added by Antigravity
-export PATH="/Users/kitagawa_zempei/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 alias npx='echo "WARNING: npx は実行しないでください" && false'
 alias npm='echo "WARNING: npm は実行しないでください" && false'
 
 # pnpm
-export PNPM_HOME="/Users/kitagawa_zempei/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
