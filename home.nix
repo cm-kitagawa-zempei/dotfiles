@@ -22,6 +22,7 @@
     # # "Hello, world!" when run.
     # pkgs.hello
     pkgs.fzf-git-sh
+    pkgs.nixd
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -89,9 +90,25 @@
   programs.lazygit = {
     enable = true;
     settings = {
+      gui = {
+        showIcons = true;
+      };
+      git = {
+        pagers = [
+          {"pager" = ''
+              delta --dark --paging=never --line-numbers --hyperlinks \
+                --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+            '';
+          }
+        ];
+      };
       os = {
         editPreset = "helix (hx)";
       };
     };
+  };
+
+  programs.delta = {
+    enable = true;
   };
 }
