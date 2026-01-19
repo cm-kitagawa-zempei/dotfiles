@@ -77,12 +77,21 @@
 
   programs.zsh = {
     enable = true;
-    initExtra = ''
+    initContent = ''
       # fzf-gitのインストール
       source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
 
       # .zshrcの読み込み
       ${builtins.readFile ./zsh/.zshrc}
     '';
+  };
+
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      os = {
+        editPreset = "helix (hx)";
+      };
+    };
   };
 }
