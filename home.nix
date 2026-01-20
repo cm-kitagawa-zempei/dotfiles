@@ -79,6 +79,8 @@
 
   programs.zsh = {
     enable = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
     initContent = ''
       # fzf-gitのインストール
       source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh

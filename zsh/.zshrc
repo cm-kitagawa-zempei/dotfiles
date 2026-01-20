@@ -173,16 +173,6 @@ zle -N ghq-fzf
 bindkey '^]' ghq-fzf
 
 # ============================================================================
-# zsh拡張機能
-# ============================================================================
-
-# zsh-autosuggestions（コマンド履歴からの自動提案）
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# zsh-syntax-highlighting（コマンドのシンタックスハイライト）
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# ============================================================================
 # エイリアス設定
 # ============================================================================
 
