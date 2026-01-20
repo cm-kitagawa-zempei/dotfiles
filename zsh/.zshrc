@@ -9,9 +9,6 @@
 # Rust環境の設定
 . "$HOME/.cargo/env"
 
-# starshipプロンプトを有効化
-eval "$(starship init zsh)"
-
 # キーバインドのタイムアウトを延長（Ctrl+G系のキーバインド用）
 # デフォルト40（0.4秒） → 100（1.0秒）に変更
 export KEYTIMEOUT=100

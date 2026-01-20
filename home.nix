@@ -90,6 +90,13 @@
     '';
   };
 
+  programs.starship = {
+    enable = true;
+    settings = {
+      command_timeout = 1000;
+    };
+  };
+
   programs.lazygit = {
     enable = true;
     settings = {
