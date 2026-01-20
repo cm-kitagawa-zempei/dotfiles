@@ -23,6 +23,7 @@
     # pkgs.hello
     pkgs.fzf-git-sh
     pkgs.nixd
+    pkgs.nixfmt-rfc-style
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
