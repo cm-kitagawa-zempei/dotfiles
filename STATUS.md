@@ -12,7 +12,11 @@
 | starship | `programs.starship` | プロンプト |
 | lazygit | `programs.lazygit` | `settings`で設定も管理 |
 | delta | `programs.delta` | Git diffツール |
+| fzf | `programs.fzf` | ファジーファインダー、zsh統合、fd/bat連携 |
 | fzf-git-sh | `home.packages` | fzf + Git統合 |
+| fd | `programs.fd` | findの代替、fzfのファイル検索で使用 |
+| bat | `programs.bat` | catの代替、fzfのプレビューで使用 |
+| eza | `programs.eza` | lsの代替、zsh統合でエイリアス自動設定 |
 | nixd | `home.packages` | Nix LSP |
 | nixfmt-rfc-style | `home.packages` | Nixフォーマッタ（公式） |
 
@@ -22,10 +26,6 @@
 
 | ツール | 用途 | 移行優先度 |
 |--------|------|-----------|
-| fzf | ファジーファインダー | 高（`programs.fzf`で管理可能） |
-| fd | findの代替 | 中 |
-| bat | catの代替 | 中（`programs.bat`で管理可能） |
-| eza | lsの代替 | 中（`programs.eza`で管理可能） |
 | gh | GitHub CLI | 中（`programs.gh`で管理可能） |
 | ghq | Gitリポジトリ管理 | 中 |
 | z | ディレクトリジャンプ | 低（`programs.zoxide`で代替検討） |

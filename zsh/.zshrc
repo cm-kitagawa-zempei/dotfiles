@@ -69,19 +69,6 @@ eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 
 # ============================================================================
-# fzf設定
-# ============================================================================
-
-# fzfのキーバインドとファジー補完を有効化
-source <(fzf --zsh)
-
-# fzfのファイル・ディレクトリ検索設定（隠しファイルも含む、.gitディレクトリは除外）
-export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git'
-
-# fzfのプレビュー設定（ファイルはbat、ディレクトリはezaでツリー表示）
-export FZF_CTRL_T_OPTS='--preview "if [ -d {} ]; then eza --tree --level=2 --icons --color=always {}; else bat --color=always --style=header,grid --line-range :100 {}; fi"'
-
-# ============================================================================
 # Git + fzf統合設定
 # ============================================================================
 
@@ -175,10 +162,6 @@ bindkey '^]' ghq-fzf
 
 # Python仮想環境の有効化
 alias activate="source .venv/bin/activate"
-
-# ls系コマンド（ezaを使用）
-alias ll="eza -lh"
-alias lla="eza -alh"
 
 # エディタ
 alias vim="nvim"
