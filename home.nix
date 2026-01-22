@@ -52,6 +52,9 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+
+    # Login shell environment (Nix PATH, Homebrew, etc.)
+    ".zprofile".source = ./zsh/.zprofile;
   };
 
   # Home Manager can also manage your environment variables through
