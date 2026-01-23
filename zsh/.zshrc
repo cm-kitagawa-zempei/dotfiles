@@ -30,33 +30,13 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="$HOME/.rd/bin:$PATH"
 
 # ============================================================================
-# コマンド履歴設定
-# ============================================================================
-
-# 履歴を保存するファイルのパス
-HISTFILE=~/.zsh_history
-
-# メモリ上で保持する履歴の最大件数
-HISTSIZE=5000
-
-# 履歴ファイルに保存する履歴の最大件数
-SAVEHIST=10000
-
-# 重複する履歴を無視する設定
-setopt hist_ignore_all_dups
-
-# セッション間で履歴を共有
-setopt share_history
-
-# コマンド実行時に即座に履歴ファイルに追記
-setopt inc_append_history
-# ============================================================================
 # 補完機能設定
 # ============================================================================
+# compinit はHome Managerで実行済み
+# ここではHomebrew用のfpath追加のみ
 
-# Git補完機能を有効化
+# Homebrewツールの補完パスを追加
 fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
-autoload -Uz compinit && compinit
 
 # git-extrasの補完機能を有効化
 source /opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh
