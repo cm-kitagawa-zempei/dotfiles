@@ -38,9 +38,6 @@ export PATH="$HOME/.rd/bin:$PATH"
 # Homebrewツールの補完パスを追加
 fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
 
-# git-extrasの補完機能を有効化
-source /opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh
-
 # uv (Python package manager) の補完機能を有効化
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"

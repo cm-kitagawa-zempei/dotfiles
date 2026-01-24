@@ -30,7 +30,6 @@
 
 | ツール | 用途 | 移行優先度 |
 |--------|------|-----------|
-| git-extras | Git拡張コマンド | 低 |
 | nodebrew | Node.jsバージョン管理 | 低（専用ツールのため移行非推奨） |
 | uv | Pythonパッケージマネージャ | 低（`home.packages`で管理可能） |
 | libpq | PostgreSQLクライアントライブラリ | 低 |
