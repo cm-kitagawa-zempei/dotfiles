@@ -20,6 +20,9 @@
 | eza | `programs.eza` | lsの代替、zsh統合でエイリアス自動設定 |
 | nixd | `home.packages` | Nix LSP |
 | nixfmt | `home.packages` | Nixフォーマッタ |
+| gh | `programs.gh` | GitHub CLI |
+| ghq | `home.packages` | Gitリポジトリ管理 |
+| zoxide | `programs.zoxide` | ディレクトリジャンプ（zから移行） |
 
 ## Homebrew で管理中（移行候補）
 
@@ -27,9 +30,6 @@
 
 | ツール | 用途 | 移行優先度 |
 |--------|------|-----------|
-| gh | GitHub CLI | 中（`programs.gh`で管理可能） |
-| ghq | Gitリポジトリ管理 | 中（`home.packages`で管理可能） |
-| z | ディレクトリジャンプ | 低（`programs.zoxide`で代替検討） |
 | git-extras | Git拡張コマンド | 低 |
 | nodebrew | Node.jsバージョン管理 | 低（専用ツールのため移行非推奨） |
 | uv | Pythonパッケージマネージャ | 低（`home.packages`で管理可能） |

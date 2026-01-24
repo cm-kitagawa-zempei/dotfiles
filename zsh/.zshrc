@@ -41,9 +41,6 @@ fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
 # git-extrasの補完機能を有効化
 source /opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh
 
-# GitHub CLI (gh) の補完機能を有効化
-eval "$(gh completion -s zsh)"
-
 # uv (Python package manager) の補完機能を有効化
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
@@ -163,9 +160,6 @@ alias gs='git status'
 
 # snowsql
 alias snowsql=/Applications/SnowSQL.app/Contents/MacOS/snowsql
-
-# z
-. `brew --prefix`/etc/profile.d/z.sh
 
 # ============================================================================
 # 設定完了

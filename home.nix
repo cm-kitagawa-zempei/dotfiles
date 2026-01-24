@@ -24,6 +24,7 @@
     pkgs.fzf-git-sh
     pkgs.nixd
     pkgs.nixfmt
+    pkgs.ghq
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -154,6 +155,16 @@
   };
 
   programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
+  };
+
+  programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
   };
