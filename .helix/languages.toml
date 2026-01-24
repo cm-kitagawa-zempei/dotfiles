@@ -1,0 +1,6 @@
+[language-server.nixd.config.nixd.nixpkgs]
+expr = "import (builtins.getFlake (\"git+file://\" + toString ./.)).inputs.nixpkgs { }"
+
+[language-server.nixd.config.nixd.options.home-manager]
+expr = "(builtins.getFlake (\"git+file://\" + toString ./.)).homeConfigurations.kitagawa_zempei.options"
+
