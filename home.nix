@@ -205,7 +205,7 @@
             ":sh macism com.apple.keylayout.ABC"
             "normal_mode"
           ];
-          C-g = [
+          C-l = [
             ":write-all"
             ":new"
             ":insert-output lazygit"
@@ -313,5 +313,79 @@
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.zellij = {
+    enable = true;
+    settings = {
+      simplified_ui = true;
+      keybinds.shared._children = [
+        {
+          bind = {
+            _args = [
+              "Alt h"
+              "Alt Left"
+            ];
+            MoveFocusOrTab = [ "Left" ];
+          };
+        }
+        {
+          bind = {
+            _args = [
+              "Alt j"
+              "Alt Down"
+            ];
+            MoveFocus = [ "Down" ];
+          };
+        }
+        {
+          bind = {
+            _args = [
+              "Alt k"
+              "Alt Up"
+            ];
+            MoveFocus = [ "Up" ];
+          };
+        }
+        {
+          bind = {
+            _args = [
+              "Alt l"
+              "Alt Right"
+            ];
+            MoveFocusOrTab = [ "Right" ];
+          };
+        }
+        {
+          bind = {
+            _args = [ "Alt ;" ];
+            Resize = [ "Increase" ];
+          };
+        }
+        {
+          bind = {
+            _args = [ "Alt -" ];
+            Resize = [ "Decrease" ];
+          };
+        }
+      ];
+      keybinds.pane._children = [
+        {
+          bind = {
+            _args = [ "e" ];
+            _children = [
+              { TogglePaneEmbedOrFloating = { }; }
+              { SwitchToMode._args = [ "locked" ]; }
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = [ "left" ];
+            MoveFocus = [ "left" ];
+          };
+        }
+      ];
+    };
   };
 }
