@@ -25,6 +25,7 @@
     pkgs.nixd
     pkgs.nixfmt
     pkgs.ghq
+    pkgs.zellij
 
     # Claude Code用プロンプトエディタスクリプト
     # Alt-eでHelixを開き、編集内容をClaude Codeに送信する
@@ -81,6 +82,9 @@
 
     # Login shell environment (Nix PATH, Homebrew, etc.)
     ".zprofile".source = ./zsh/.zprofile;
+
+    # Zellij config
+    ".config/zellij/config.kdl".source = ./zellij/config.kdl;
   };
 
   # Home Manager can also manage your environment variables through
@@ -340,104 +344,6 @@
     enableZshIntegration = true;
   };
 
-  programs.zellij = {
-    enable = true;
-    settings = {
-      show_startup_tips = false;
-      advanced_mouse_actions = false;
-      keybinds.shared._children = [
-        {
-          bind = {
-            _args = [
-              "Alt h"
-              "Alt Left"
-            ];
-            MoveFocusOrTab = [ "Left" ];
-          };
-        }
-        {
-          bind = {
-            _args = [
-              "Alt j"
-              "Alt Down"
-            ];
-            MoveFocus = [ "Down" ];
-          };
-        }
-        {
-          bind = {
-            _args = [
-              "Alt k"
-              "Alt Up"
-            ];
-            MoveFocus = [ "Up" ];
-          };
-        }
-        {
-          bind = {
-            _args = [
-              "Alt l"
-              "Alt Right"
-            ];
-            MoveFocusOrTab = [ "Right" ];
-          };
-        }
-        {
-          bind = {
-            _args = [ "Alt ;" ];
-            Resize = [ "Increase" ];
-          };
-        }
-        {
-          bind = {
-            _args = [ "Alt -" ];
-            Resize = [ "Decrease" ];
-          };
-        }
-      ];
-      keybinds.shared_except = {
-        # Alt-eでClaude Code用プロンプトエディタを開く（lockedモード以外で有効）
-        _args = [ "locked" ];
-        _children = [
-          {
-            bind = {
-              _args = [ "Alt e" ];
-              _children = [
-                {
-                  Run = {
-                    _args = [ "claude-prompt-editor" ];
-                    direction = "Down";
-                    floating = true;
-                    close_on_exit = true;
-                  };
-                }
-                {
-                  SwitchToMode = [ "locked" ];
-                }
-              ];
-            };
-          }
-        ];
-      };
-      keybinds.pane._children = [
-        {
-          bind = {
-            _args = [ "e" ];
-            _children = [
-              { TogglePaneEmbedOrFloating = { }; }
-              { SwitchToMode._args = [ "locked" ]; }
-            ];
-          };
-        }
-        {
-          bind = {
-            _args = [ "left" ];
-            MoveFocus = [ "left" ];
-          };
-        }
-      ];
-    };
-  };
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
