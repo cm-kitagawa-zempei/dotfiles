@@ -26,6 +26,31 @@
     pkgs.nixfmt
     pkgs.ghq
 
+    # Claude Code用プロンプトエディタスクリプト
+    # Alt-eでHelixを開き、編集内容をClaude Codeに送信する
+    (pkgs.writeShellScriptBin "claude-prompt-editor" ''
+      set -euo pipefail
+
+      # 一時ファイルを作成
+      TMPFILE=$(mktemp /tmp/claude-prompt-$$.cprompt)
+      trap "rm -f $TMPFILE" EXIT
+
+      # Helixを開く
+      hx "$TMPFILE"
+
+      # ファイルが空でなければClaude Codeに送信
+      if [ -s "$TMPFILE" ]; then
+        # フローティングペインを閉じて元のペインにフォーカス
+        zellij action toggle-floating-panes
+        sleep 0.1
+        # 元のペインに内容を送信
+        zellij action write-chars -- "$(cat "$TMPFILE") "
+      fi
+
+      # 一時ファイルの削除
+      rm -f "$TMPFILE"
+    '')
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -318,7 +343,8 @@
   programs.zellij = {
     enable = true;
     settings = {
-      simplified_ui = true;
+      show_startup_tips = false;
+      advanced_mouse_actions = false;
       keybinds.shared._children = [
         {
           bind = {
@@ -369,6 +395,30 @@
           };
         }
       ];
+      keybinds.shared_except = {
+        # Alt-eでClaude Code用プロンプトエディタを開く（lockedモード以外で有効）
+        _args = [ "locked" ];
+        _children = [
+          {
+            bind = {
+              _args = [ "Alt e" ];
+              _children = [
+                {
+                  Run = {
+                    _args = [ "claude-prompt-editor" ];
+                    direction = "Down";
+                    floating = true;
+                    close_on_exit = true;
+                  };
+                }
+                {
+                  SwitchToMode = [ "locked" ];
+                }
+              ];
+            };
+          }
+        ];
+      };
       keybinds.pane._children = [
         {
           bind = {
