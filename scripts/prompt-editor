@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Claude Code用プロンプトエディタスクリプト
-# Alt-eでHelixを開き、編集内容をClaude Codeに送信する
+# プロンプトエディタスクリプト
+# Alt-eでHelixを開き、編集内容を元のペインに送信する
 
 # 一時ファイルを作成
 TMPFILE=$(mktemp /tmp/claude-prompt-$$.cprompt)

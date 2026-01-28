@@ -27,30 +27,9 @@
     pkgs.ghq
     pkgs.zellij
 
-    # Claude Code用プロンプトエディタスクリプト
-    # Alt-eでHelixを開き、編集内容をClaude Codeに送信する
-    (pkgs.writeShellScriptBin "claude-prompt-editor" ''
-      set -euo pipefail
-
-      # 一時ファイルを作成
-      TMPFILE=$(mktemp /tmp/claude-prompt-$$.cprompt)
-      trap "rm -f $TMPFILE" EXIT
-
-      # Helixを開く
-      hx "$TMPFILE"
-
-      # ファイルが空でなければClaude Codeに送信
-      if [ -s "$TMPFILE" ]; then
-        # フローティングペインを閉じて元のペインにフォーカス
-        zellij action toggle-floating-panes
-        sleep 0.1
-        # 元のペインに内容を送信
-        zellij action write-chars -- "$(cat "$TMPFILE") "
-      fi
-
-      # 一時ファイルの削除
-      rm -f "$TMPFILE"
-    '')
+    # プロンプトエディタスクリプト
+    # Alt-eでHelixを開き、編集内容を元のペインに送信する
+    (pkgs.writeShellScriptBin "prompt-editor" (builtins.readFile ./scripts/prompt-editor))
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
