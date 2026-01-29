@@ -5,7 +5,7 @@ set -euo pipefail
 # Alt-eでHelixを開き、編集内容を元のペインに送信する
 
 # 一時ファイルを作成
-TMPFILE=$(mktemp /tmp/claude-prompt-$$.cprompt)
+TMPFILE=$(mktemp /tmp/claude-prompt-$$.md)
 trap "rm -f $TMPFILE" EXIT
 
 # Helixを開く

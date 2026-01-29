@@ -154,6 +154,7 @@ keybinds clear-defaults=true {
         bind "Alt e" {
             Run "prompt-editor" {
                 floating true
+                close_on_exit true
             }
             SwitchToMode "locked"
         }
