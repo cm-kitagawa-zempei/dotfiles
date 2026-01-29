@@ -64,6 +64,12 @@
 
     # Zellij config
     ".config/zellij/config.kdl".source = ./zellij/config.kdl;
+
+    # Helix script
+    ".config/helix/yazi-picker.sh" = {
+      source = ./.helix/yazi-picker.sh;
+      executable = true;
+    };
   };
 
   # Home Manager can also manage your environment variables through
@@ -220,6 +226,9 @@
             ":buffer-close!"
             ":redraw"
             ":reload-all"
+          ];
+          C-y = [
+            ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open '%{buffer_name}'"
           ];
           space.c = ":sh echo '@%{buffer_name}' | pbcopy";
         };
