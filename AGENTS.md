@@ -10,7 +10,7 @@
 
 - **宣言的な設定管理**: 設定ファイルをNixで記述し、再現性のある環境構築を実現
 - **段階的な移行**: Homebrewで管理していたツールを順次Nixへ移行中
-- **シンプルな構成**: 複雑なモジュール分割は避け、必要最小限のファイル構成を維持
+- **用途別の最小限分割**: `modules/`で用途別に分割し、見通しと保守性を確保
 
 ## ディレクトリ構成
 
@@ -18,7 +18,16 @@
 dotfiles/
 ├── flake.nix       # Nixフレーク設定（エントリポイント）
 ├── flake.lock      # 依存関係のロックファイル（自動生成）
-├── home.nix        # Home Manager設定（パッケージ・プログラム管理）
+├── home.nix        # Home Manager設定（入口・コア設定）
+├── modules/
+│   ├── home/
+│   │   ├── files.nix    # home.file 管理
+│   │   └── packages.nix # home.packages 管理
+│   └── programs/
+│       ├── shell.nix    # zsh/starship などシェル系
+│       ├── helix.nix    # Helix設定
+│       ├── cli.nix      # fzf/fd/bat/eza/zoxide/yazi
+│       └── git.nix      # lazygit/delta/gh
 ├── nix/
 │   └── nix.conf    # Nix自体の設定（flakes有効化など）
 └── zsh/
@@ -31,7 +40,13 @@ dotfiles/
 | ファイル | 役割 |
 |---------|------|
 | `flake.nix` | 依存関係（inputs）と出力（homeConfigurations）を定義。エントリポイント |
-| `home.nix` | ユーザー設定のメイン。パッケージ、プログラム、環境変数を管理 |
+| `home.nix` | 入口。`imports` と core設定（ユーザー/状態/環境変数）を管理 |
+| `modules/home/packages.nix` | `home.packages` 管理 |
+| `modules/home/files.nix` | `home.file` 管理 |
+| `modules/programs/shell.nix` | `programs.zsh` / `programs.starship` |
+| `modules/programs/helix.nix` | `programs.helix` |
+| `modules/programs/cli.nix` | `programs.{fzf,fd,bat,eza,zoxide,yazi}` |
+| `modules/programs/git.nix` | `programs.{lazygit,delta,gh}` |
 | `nix/nix.conf` | Nixの設定。`experimental-features = nix-command flakes`で新機能を有効化 |
 | `zsh/.zshrc` | zshの設定。Home Managerの`programs.zsh.initContent`から読み込まれる |
 | `zsh/.zprofile` | Homebrewの初期化など、ログイン時に実行される設定 |
@@ -61,14 +76,15 @@ dotfiles/
 }
 ```
 
-### home.nix の主要セクション
+### home.nix / modules の主要セクション
 
 | セクション | 用途 |
 |-----------|------|
-| `home.packages` | パッケージのみインストール（設定なし） |
-| `programs.<name>` | パッケージ + 設定を宣言的に管理 |
-| `home.file` | ドットファイルのシンボリックリンク管理 |
-| `home.sessionVariables` | 環境変数の設定 |
+| `imports` | モジュール読み込み（入口） |
+| `home.sessionVariables` | 環境変数の設定（`home.nix`） |
+| `home.packages` | パッケージのみインストール（`modules/home/packages.nix`） |
+| `programs.<name>` | パッケージ + 設定（`modules/programs/*.nix`） |
+| `home.file` | ドットファイルのシンボリックリンク管理（`modules/home/files.nix`） |
 
 ## 現在の管理状況
 
@@ -79,7 +95,7 @@ dotfiles/
 ### パターン1: home.packages に追加（設定不要なツール）
 
 ```nix
-# home.nix
+# modules/home/packages.nix
 home.packages = [
   pkgs.ripgrep    # 設定不要なCLIツール
   pkgs.jq
@@ -91,7 +107,7 @@ home.packages = [
 ### パターン2: programs.<name>.enable = true（設定込みツール）
 
 ```nix
-# home.nix
+# modules/programs/shell.nix
 programs.starship = {
   enable = true;
   settings = {
@@ -106,7 +122,7 @@ programs.starship = {
 ### パターン3: programs.<name> + シェル設定の移行
 
 ```nix
-# home.nix
+# modules/programs/cli.nix
 programs.fzf = {
   enable = true;
   enableZshIntegration = true;  # .zshrcへの設定追加を自動化
@@ -121,7 +137,7 @@ programs.fzf = {
 
 1. **パッケージ確認**: `nix search nixpkgs <package>` で存在確認
 2. **設定方法確認**: `programs.<name>`が使えるかHome Manager公式ドキュメントで確認
-3. **設定追加**: `home.nix`に追加
+3. **設定追加**: 用途に応じて`modules/`配下に追加
 4. **適用**: `home-manager switch --flake .`
 5. **動作確認**: ツールが正常に動作することを確認
 6. **Brewから削除**: `brew uninstall <package>`
@@ -178,10 +194,10 @@ Nixコードは `nixfmt-rfc-style`（RFC 166準拠の公式フォーマッタ）
 
 ```bash
 # フォーマット実行
-nixfmt flake.nix home.nix
+nixfmt flake.nix home.nix modules/home/*.nix modules/programs/*.nix
 
 # 差分確認のみ（CI向け）
-nixfmt --check flake.nix home.nix
+nixfmt --check flake.nix home.nix modules/home/*.nix modules/programs/*.nix
 ```
 
 ### コメント規則
@@ -201,8 +217,8 @@ programs.lazygit = {
 
 ### ファイル管理
 
-- **1つのファイルで管理できる範囲を超えたらモジュール分割を検討**
-- **現状は`home.nix`に集約**（設定量が少ないため）
+- **用途別に`modules/`へ分割して管理**
+- **`home.nix`は入口とcore設定のみを持つ**
 
 ### zsh設定の扱い
 
@@ -215,7 +231,7 @@ programs.lazygit = {
 ### 新しいCLIツールを追加する
 
 ```nix
-# home.nix の home.packages に追加
+# modules/home/packages.nix に追加
 home.packages = [
   pkgs.fzf-git-sh
   pkgs.nixd
@@ -226,7 +242,7 @@ home.packages = [
 ### programs経由でツールを追加する
 
 ```nix
-# home.nix に追加
+# modules/programs/*.nix に追加
 programs.bat = {
   enable = true;
   config = {
