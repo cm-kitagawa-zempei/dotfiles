@@ -27,10 +27,6 @@
     pkgs.ghq
     pkgs.zellij
 
-    # プロンプトエディタスクリプト
-    # Alt-eでHelixを開き、編集内容を元のペインに送信する
-    (pkgs.writeShellScriptBin "prompt-editor" (builtins.readFile ./scripts/prompt-editor))
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -64,6 +60,12 @@
 
     # Zellij config
     ".config/zellij/config.kdl".source = ./zellij/config.kdl;
+
+    # Zellij script
+    ".config/zellij/prompt-editor.sh" = {
+      source = ./zellij/prompt-editor.sh;
+      executable = true;
+    };
 
     # Helix script
     ".config/helix/yazi-picker.sh" = {

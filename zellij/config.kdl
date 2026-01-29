@@ -152,7 +152,8 @@ keybinds clear-defaults=true {
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
         bind "Alt e" {
-            Run "prompt-editor" {
+            // Original: https://zenn.dev/shisashi/articles/0ba22e272d6f2f
+            Run  "bash" "-c" "~/.config/zellij/prompt-editor.sh" {
                 floating true
                 close_on_exit true
             }
