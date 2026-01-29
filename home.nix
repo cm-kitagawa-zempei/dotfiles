@@ -153,7 +153,7 @@
 
     # config.toml
     settings = {
-      theme = "ayu_dark";
+      theme = "ayu_dark_transparent";
       editor = {
         line-number = "relative";
         mouse = true;
@@ -284,6 +284,12 @@
             nixpkgs.expr = "import <nixpkgs> {}";
           };
         };
+      };
+    };
+    themes = {
+      ayu_dark_transparent = {
+        "inherits" = "ayu_dark";
+        "ui.background" = { };
       };
     };
   };
