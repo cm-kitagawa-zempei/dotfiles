@@ -41,7 +41,7 @@
   #  /etc/profiles/per-user/kitagawa_zempei/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "hx";
   };
 
   # Let Home Manager install and manage itself.

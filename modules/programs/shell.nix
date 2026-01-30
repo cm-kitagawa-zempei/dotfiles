@@ -23,6 +23,11 @@
       # .zshrcの読み込み
       ${builtins.readFile ../../zsh/.zshrc}
     '';
+
+    profileExtra = ''
+      # Homebrew shellenv
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    '';
   };
 
   programs.starship = {

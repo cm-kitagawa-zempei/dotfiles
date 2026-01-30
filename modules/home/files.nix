@@ -15,9 +15,6 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
 
-    # Login shell environment (Nix PATH, Homebrew, etc.)
-    ".zprofile".source = ../../zsh/.zprofile;
-
     # Zellij config
     ".config/zellij/config.kdl".source = ../../zellij/config.kdl;
 
