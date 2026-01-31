@@ -21,7 +21,7 @@
       source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
 
       # .zshrcの読み込み
-      ${builtins.readFile ../../zsh/.zshrc}
+      ${builtins.readFile ../../config/zsh/.zshrc}
     '';
 
     profileExtra = ''

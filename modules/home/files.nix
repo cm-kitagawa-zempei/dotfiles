@@ -14,19 +14,21 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+  };
 
+  xdg.configFile = {
     # Zellij config
-    ".config/zellij/config.kdl".source = ../../zellij/config.kdl;
+    "zellij/config.kdl".source = ../../config/zellij/config.kdl;
 
     # Zellij script
-    ".config/zellij/prompt-editor.sh" = {
-      source = ../../zellij/prompt-editor.sh;
+    "zellij/prompt-editor.sh" = {
+      source = ../../config/zellij/prompt-editor.sh;
       executable = true;
     };
 
     # Helix script
-    ".config/helix/yazi-picker.sh" = {
-      source = ../../.helix/yazi-picker.sh;
+    "helix/yazi-picker.sh" = {
+      source = ../../config/helix/yazi-picker.sh;
       executable = true;
     };
   };
