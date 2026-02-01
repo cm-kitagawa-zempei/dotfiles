@@ -13,6 +13,7 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     let
+      username = "kitagawa_zempei";
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
     in
@@ -26,6 +27,9 @@
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
+        extraSpecialArgs = {
+          inherit username;
+        };
       };
     };
 }

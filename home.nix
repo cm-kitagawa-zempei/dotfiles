@@ -1,18 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  username,
+  ...
+}:
 
 {
-  imports = [
-    ./modules/home/packages.nix
-    ./modules/home/files.nix
-    ./modules/programs/shell.nix
-    ./modules/programs/helix.nix
-    ./modules/programs/cli.nix
-    ./modules/programs/git.nix
-  ];
-
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "kitagawa_zempei";
+  home.username = username;
   home.homeDirectory = "/Users/${config.home.username}";
 
   # This value determines the Home Manager release that your configuration is
@@ -44,6 +39,14 @@
     EDITOR = "hx";
   };
 
+  imports = [
+    ./modules/home/packages.nix
+    ./modules/home/files.nix
+    ./modules/programs/shell.nix
+    ./modules/programs/helix.nix
+    ./modules/programs/cli.nix
+    ./modules/programs/git.nix
+  ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
