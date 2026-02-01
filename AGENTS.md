@@ -163,8 +163,8 @@ nix flake update
 # 世代一覧を表示
 home-manager generations
 
-# 過去の世代にロールバック
-home-manager activate <generation-path>
+# 一つ前の世代にロールバック
+home-manager switch --rollback
 
 # パッケージを検索
 nix search nixpkgs <package-name>
