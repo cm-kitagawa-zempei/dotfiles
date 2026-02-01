@@ -23,6 +23,12 @@
 | gh | `programs.gh` | GitHub CLI |
 | ghq | `home.packages` | Gitリポジトリ管理 |
 | zoxide | `programs.zoxide` | ディレクトリジャンプ（zから移行） |
+| zellij | `home.packages` | ターミナルマルチプレクサ、`home.file`で設定管理 |
+| helix | `programs.helix` | テキストエディタ、LSP/言語/テーマ設定込み |
+| pyright | `programs.helix.extraPackages` | Python LSP（Helix用） |
+| ruff | `programs.helix.extraPackages` | Python linter/formatter（Helix用） |
+| yazi | `programs.yazi` | ターミナルファイルマネージャ、zsh統合 |
+| uv | `home.packages` | Pythonパッケージマネージャ |
 
 ## Homebrew で管理中（移行候補）
 
@@ -31,14 +37,12 @@
 | ツール | 用途 | 移行優先度 |
 |--------|------|-----------|
 | nodebrew | Node.jsバージョン管理 | 低（専用ツールのため移行非推奨） |
-| uv | Pythonパッケージマネージャ | 低（`home.packages`で管理可能） |
 | libpq | PostgreSQLクライアントライブラリ | 低 |
 
 ## その他のツール（dotfiles管理外）
 
 | ツール | 管理方法 | 備考 |
 |--------|---------|------|
-| Rust/Cargo | rustup | `~/.cargo/env`から読み込み |
 | Rancher Desktop | アプリケーション | `~/.rd/bin`をPATHに追加 |
 | SnowSQL | アプリケーション | `/Applications/SnowSQL.app` |
 | pnpm | 独自インストール | `~/Library/pnpm` |
