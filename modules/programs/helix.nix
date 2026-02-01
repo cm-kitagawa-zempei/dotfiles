@@ -120,7 +120,10 @@
         }
         {
           name = "nix";
-          language-servers = [ "nixd" ];
+          language-servers = [
+            "nixd"
+            "nil"
+          ];
           formatter = {
             command = "nixfmt";
           };
@@ -145,6 +148,9 @@
           config.nixd = {
             nixpkgs.expr = "import <nixpkgs> {}";
           };
+        };
+        nil = {
+          command = "nil";
         };
       };
     };

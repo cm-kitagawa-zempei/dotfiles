@@ -9,6 +9,7 @@
     # pkgs.hello
     fzf-git-sh
     nixd
+    nil
     nixfmt
     ghq
     zellij
