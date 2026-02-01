@@ -134,9 +134,6 @@ bindkey '^]' ghq-fzf
 # Python仮想環境の有効化
 alias activate="source .venv/bin/activate"
 
-# エディタ
-alias vim="nvim"
-
 # AWS CLI関連
 alias awsp='aws --profile'
 alias awsv='aws-vault'
