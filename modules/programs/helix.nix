@@ -158,6 +158,8 @@
       ayu_dark_transparent = {
         "inherits" = "ayu_dark";
         "ui.background" = { };
+        "ui.linenr" = { fg = "#bfbdb6"; };
+        "ui.linenr.selected" = { fg = "#FFFFFF"; };
       };
     };
   };
