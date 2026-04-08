@@ -83,10 +83,10 @@
           C-y = [
             ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open '%{buffer_name}'"
           ];
-          space.c = ":sh echo '@%{buffer_name}' | pbcopy";
+          space.c = ":sh echo '%{buffer_name}' | pbcopy";
         };
         select = {
-          space.c = ":sh echo '@%{buffer_name}:%{selection_line_start}-%{selection_line_end}' | pbcopy";
+          space.c = ":sh echo '%{buffer_name}:%{selection_line_start}-%{selection_line_end}' | pbcopy";
         };
         insert = {
           esc = [
@@ -158,8 +158,12 @@
       ayu_dark_transparent = {
         "inherits" = "ayu_dark";
         "ui.background" = { };
-        "ui.linenr" = { fg = "#bfbdb6"; };
-        "ui.linenr.selected" = { fg = "#FFFFFF"; };
+        "ui.linenr" = {
+          fg = "#bfbdb6";
+        };
+        "ui.linenr.selected" = {
+          fg = "#FFFFFF";
+        };
       };
     };
   };
