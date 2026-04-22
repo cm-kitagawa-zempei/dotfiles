@@ -8,10 +8,15 @@
 
     # コマンド履歴設定
     history = {
-      size = 10000; # メモリ上の履歴件数
-      save = 10000; # ファイルに保存する件数
+      size = 100000; # メモリ上の履歴件数
+      save = 100000; # ファイルに保存する件数
       path = "$HOME/.zsh_history";
-      ignoreAllDups = true; # 全ての重複を削除（古い方を消す）
+      extended = true; # 全行にタイムスタンプを付与（: <ts>:<dur>;<cmd>形式で統一）
+      ignoreAllDups = true; # メモリ上で全ての重複を削除（古い方を消す）
+      saveNoDups = true; # ファイル保存時も重複をスキップ
+      findNoDups = true; # Ctrl-R/↑ 検索で重複を飛ばす
+      expireDuplicatesFirst = true; # size超過時は重複から先に破棄
+      ignoreSpace = true; # 行頭スペースで始まるコマンドは記録しない
       share = true; # セッション間で共有
       append = true; # 即座に履歴ファイルに追記
     };
