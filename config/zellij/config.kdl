@@ -159,7 +159,7 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "locked"
         }
-        bind "Alt f" { ToggleFloatingPanes; }
+        // bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt h" { MoveFocusOrTab "left"; }
         bind "Alt j" { MoveFocus "down"; }
         bind "Alt k" { MoveFocus "up"; }
