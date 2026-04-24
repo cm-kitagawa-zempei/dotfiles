@@ -149,8 +149,8 @@ keybinds clear-defaults=true {
     shared_among "normal" "locked" {
         bind "Alt ;" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
-        bind "Alt [" { PreviousSwapLayout; }
-        bind "Alt ]" { NextSwapLayout; }
+        bind "Alt ," { PreviousSwapLayout; }
+        bind "Alt ." { NextSwapLayout; }
         bind "Alt e" {
             // Original: https://zenn.dev/shisashi/articles/0ba22e272d6f2f
             Run  "bash" "-c" "~/.config/zellij/prompt-editor.sh" {
