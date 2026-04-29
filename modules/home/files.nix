@@ -1,4 +1,4 @@
-{ ... }:
+{ config, lib, ... }:
 
 {
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -17,9 +17,6 @@
   };
 
   xdg.configFile = {
-    # Zellij config
-    "zellij/config.kdl".source = ../../config/zellij/config.kdl;
-
     # Zellij script
     "zellij/prompt-editor.sh" = {
       source = ../../config/zellij/prompt-editor.sh;
@@ -32,4 +29,13 @@
       executable = true;
     };
   };
+
+  # zellij は config.kdl を監視して既存セッションにも変更を反映するが、
+  # symlink だと検知されないため実体ファイルとしてコピー配置する。
+  # https://github.com/zellij-org/zellij/issues/3992
+  home.activation.zellijConfigCopy = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD rm -f ${config.xdg.configHome}/zellij/config.kdl
+    $DRY_RUN_CMD install -Dm644 ${../../config/zellij/config.kdl} \
+      ${config.xdg.configHome}/zellij/config.kdl
+  '';
 }
