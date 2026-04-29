@@ -151,14 +151,6 @@ keybinds clear-defaults=true {
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt ," { PreviousSwapLayout; }
         bind "Alt ." { NextSwapLayout; }
-        bind "Alt e" {
-            // Original: https://zenn.dev/shisashi/articles/0ba22e272d6f2f
-            Run  "bash" "-c" "~/.config/zellij/prompt-editor.sh" {
-                floating true
-                close_on_exit true
-            }
-            SwitchToMode "locked"
-        }
         // bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt h" { MoveFocusOrTab "left"; }
         bind "Alt j" { MoveFocus "down"; }

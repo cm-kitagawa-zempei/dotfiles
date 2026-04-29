@@ -17,12 +17,6 @@
   };
 
   xdg.configFile = {
-    # Zellij script
-    "zellij/prompt-editor.sh" = {
-      source = ../../config/zellij/prompt-editor.sh;
-      executable = true;
-    };
-
     # Helix script
     "helix/yazi-picker.sh" = {
       source = ../../config/helix/yazi-picker.sh;
