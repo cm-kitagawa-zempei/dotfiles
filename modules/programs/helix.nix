@@ -84,6 +84,7 @@
             ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open '%{buffer_name}'"
           ];
           space.c = ":sh echo '%{buffer_name}' | pbcopy";
+          "A-c" = "copy_selection_on_prev_line";
         };
         select = {
           space.c = ":sh echo '%{buffer_name}:%{selection_line_start}-%{selection_line_end}' | pbcopy";
