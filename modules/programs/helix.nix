@@ -165,6 +165,12 @@
         "ui.linenr.selected" = {
           fg = "#FFFFFF";
         };
+        "ui.selection" = {
+          bg = "#264F78";
+        };
+        "ui.selection.primary" = {
+          bg = "#264F78";
+        };
       };
     };
   };
