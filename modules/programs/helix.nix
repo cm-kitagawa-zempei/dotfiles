@@ -134,6 +134,15 @@
         }
       ];
       language-server = {
+        marksman = {
+          command = "marksman";
+          args = [ "server" ];
+          # nixpkgsのmarksmanはICUをLD_LIBRARY_PATH(Linux用)で渡すため
+          # macOSではICU初期化に失敗して起動できない。ICU不使用モードで回避
+          environment = {
+            DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1";
+          };
+        };
         pyright = {
           command = "pyright-langserver";
           args = [ "--stdio" ];
