@@ -8,6 +8,7 @@
     extraPackages = [
       pkgs.pyright
       pkgs.ruff
+      pkgs.marksman
     ];
 
     # config.toml
@@ -117,6 +118,7 @@
         }
         {
           name = "markdown";
+          language-servers = [ "marksman" ];
           soft-wrap.enable = true;
         }
         {
