@@ -8,10 +8,16 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hunk.url = "github:modem-dev/hunk";
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      hunk,
+      ...
+    }:
     let
       username = "kitagawa_zempei";
       system = "aarch64-darwin";
@@ -29,6 +35,7 @@
         # to pass through arguments to home.nix
         extraSpecialArgs = {
           inherit username;
+          hunkPackage = hunk.packages.${system}.default;
         };
       };
     };

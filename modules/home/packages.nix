@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  hunkPackage,
+  ...
+}:
 
 {
   # The home.packages option allows you to install Nix packages into your
@@ -16,6 +20,7 @@
     gh-markdown-preview
     uv
     sqlfluff
+    hunkPackage
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
