@@ -23,6 +23,7 @@
 | gh | `programs.gh` | GitHub CLI |
 | ghq | `home.packages` | Gitリポジトリ管理 |
 | zoxide | `programs.zoxide` | ディレクトリジャンプ（zから移行） |
+| direnv | `programs.direnv` | ディレクトリ単位の環境変数管理、zsh統合、nix-direnv連携 |
 | zellij | `home.packages` | ターミナルマルチプレクサ、`home.file`で設定管理 |
 | helix | `programs.helix` | テキストエディタ、LSP/言語/テーマ設定込み |
 | pyright | `programs.helix.extraPackages` | Python LSP（Helix用） |
