@@ -145,6 +145,33 @@ alias awsvlogin='(){ open -na "Google Chrome" --args --incognito --user-data-dir
 # granted: assume を source して現在のシェルに認証情報を反映できるようにする
 alias assume="source assume"
 
+# granted / assume の zsh 補完（urfave/cli v2 形式: --generate-bash-completion）
+# assume はプロファイル名を補完（実体の assumego を呼ぶ）
+_assume_cli_zsh_autocomplete() {
+  local -a opts
+  local cur=${words[-1]}
+  if [[ "$cur" == "-"* ]]; then
+    opts=("${(@f)$(assumego ${words[@]:1:$(($#words-2))} ${cur} --generate-bash-completion)}")
+  else
+    opts=("${(@f)$(assumego ${words[@]:1:$(($#words-2))} --generate-bash-completion)}")
+  fi
+  [[ "${opts[1]}" != "" ]] && _describe 'values' opts || _files
+}
+compdef _assume_cli_zsh_autocomplete assume
+
+# granted はサブコマンドを補完
+_granted_cli_zsh_autocomplete() {
+  local -a opts
+  local cur=${words[-1]}
+  if [[ "$cur" == "-"* ]]; then
+    opts=("${(@f)$(${words[@]:0:$(($#words-1))} ${cur} --generate-bash-completion)}")
+  else
+    opts=("${(@f)$(${words[@]:0:$(($#words-1))} --generate-bash-completion)}")
+  fi
+  [[ "${opts[1]}" != "" ]] && _describe 'values' opts || _files
+}
+compdef _granted_cli_zsh_autocomplete granted
+
 # Git関連エイリアス（fzf統合）
 alias gb='fzf-git-branch'          # ブランチ一覧表示
 alias gch='fzf-git-checkout'       # ブランチ選択してcheckout
