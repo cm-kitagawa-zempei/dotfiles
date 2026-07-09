@@ -142,6 +142,8 @@ alias activate="source .venv/bin/activate"
 alias awsp='aws --profile'
 alias awsv='aws-vault'
 alias awsvlogin='(){ open -na "Google Chrome" --args --incognito --user-data-dir=$HOME/Library/Application\ Support/Google/Chrome/aws-vault/$@ $(aws-vault login $@ --stdout) }'
+# granted: assume を source して現在のシェルに認証情報を反映できるようにする
+alias assume="source assume"
 
 # Git関連エイリアス（fzf統合）
 alias gb='fzf-git-branch'          # ブランチ一覧表示
