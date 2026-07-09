@@ -37,6 +37,8 @@
   #
   home.sessionVariables = {
     EDITOR = "hx";
+    # granted が ~/.aws/config を自動書き換えするのを防ぐ
+    GRANTED_DISABLE_CONFIG_UPDATE = "true";
   };
 
   imports = [
