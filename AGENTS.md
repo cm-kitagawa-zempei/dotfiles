@@ -86,10 +86,6 @@ dotfiles/
 | `programs.<name>` | パッケージ + 設定（`modules/programs/*.nix`） |
 | `home.file` | ドットファイルのシンボリックリンク管理（`modules/home/files.nix`） |
 
-## 現在の管理状況
-
-各ツールのNix/Homebrew管理状況は @STATUS.md を参照。
-
 ## ツール追加パターン
 
 ### パターン1: home.packages に追加（設定不要なツール）

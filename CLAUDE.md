@@ -54,5 +54,5 @@ home-manager switch --flake . --show-trace
   - 設定あり → `modules/programs/*.nix` で `programs.<name>` を使用
   - シェル統合あり → `enableZshIntegration = true` を活用
 - `home.nix` にはツール設定を直接書かず、必ず modules/ に分割
-- Homebrew管理ツールを段階的にNixへ移行中（現状は `STATUS.md` 参照）
+- Homebrew管理ツールを段階的にNixへ移行中
 - コミットメッセージにCo-Authored-Byを付けない
