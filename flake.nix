@@ -21,7 +21,11 @@
     let
       username = "kitagawa_zempei";
       system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        # 1Password CLI（unfree）のみ許可。他のunfreeパッケージは引き続き拒否。
+        config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [ "1password-cli" ];
+      };
     in
     {
       homeConfigurations."kitagawa_zempei" = home-manager.lib.homeManagerConfiguration {
