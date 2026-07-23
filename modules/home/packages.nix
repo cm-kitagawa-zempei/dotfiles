@@ -18,6 +18,7 @@
     ghq
     zellij
     gh-markdown-preview
+    glow
     uv
     sqlfluff
     hunkPackage

@@ -86,6 +86,7 @@
           ];
           space.c = ":sh echo '%{buffer_name}' | pbcopy";
           space.m = ":sh zellij run --floating -- gh-markdown-preview '%{buffer_name}'";
+          space.S-m = ":sh zellij run --floating -c -x 10%% -y 10%% --width 80%% --height 80%% -- glow -p '%{buffer_name}'";
           A-c = "copy_selection_on_prev_line";
         };
         select = {
