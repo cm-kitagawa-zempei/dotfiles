@@ -25,6 +25,23 @@
     granted
     _1password-cli
 
+    # Homebrew から移行した CLI ツール
+    jq
+    yq-go # Homebrew の yq は Go 版 (mikefarah)
+    tree
+    ripgrep
+    sd
+    ffmpeg
+    duckdb
+    poppler-utils # pdftotext 等の PDF CLI
+    trivy
+    terraform-docs
+    tflint
+    byobu
+    pre-commit
+    aws-vault
+    python3Packages.cfn-lint
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
