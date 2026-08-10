@@ -8,9 +8,9 @@
         nerdFontsVersion = "3";
       };
       git = {
-        pagers = [
+        diffRenderers = [
           {
-            "pager" = ''
+            command = ''
               delta --dark --paging=never --line-numbers --hyperlinks \
                 --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
             '';
