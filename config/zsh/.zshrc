@@ -200,8 +200,14 @@ alias npm='echo "WARNING: npm は実行しないでください" && false'
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
+# pnpm 10 以前に入れたグローバルコマンド用（すべて入れ直したら削除可）
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm 11 以降はグローバル bin が $PNPM_HOME/bin に置かれる
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
