@@ -22,6 +22,9 @@
       source = ../../config/helix/yazi-picker.sh;
       executable = true;
     };
+
+    # herdr（変更後は herdr server reload-config で反映）
+    "herdr/config.toml".source = ../../config/herdr/config.toml;
   };
 
   # zellij は config.kdl を監視して既存セッションにも変更を反映するが、

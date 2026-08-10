@@ -1,0 +1,35 @@
+# herdr configuration
+# zellij の Alt 系ダイレクト操作を移植する方針。
+# 変更後の反映: herdr server reload-config
+
+onboarding = false
+
+[keys]
+# プレフィックスはデフォルトの Ctrl+B のまま
+# （zellij の Ctrl Space と入口を分けて「今どちらにいるか」を明確にする）
+
+# zellij の Alt 系ダイレクト操作（プレフィックス不要）
+focus_pane_left = "alt+h"
+focus_pane_down = "alt+j"
+focus_pane_up = "alt+k"
+focus_pane_right = "alt+l"
+split_vertical = "alt+n"         # zellij の Alt+n（新規ペイン）相当。右に分割
+split_horizontal = "alt+shift+n" # 下に分割
+
+# zellij pane モードの f と同じキーでフルスクリーン
+zoom = "prefix+f"
+
+# floating pane の代替: yazi を popup で開く
+[[keys.command]]
+key = "prefix+y"
+type = "popup"
+command = "yazi"
+width = "80%"
+height = "80%"
+
+[ui]
+agent_panel_sort = "spaces"
+
+[experimental]
+# プレフィックスモード中だけ IME を ASCII 配列へ切り替える（macOS 専用）
+switch_ascii_input_source_in_prefix = true
