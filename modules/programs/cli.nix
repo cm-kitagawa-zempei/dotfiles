@@ -5,8 +5,10 @@
     enable = true;
     enableZshIntegration = true;
     defaultCommand = "fd -t f --hidden --follow --exclude .git";
-    fileWidgetCommand = "fd -t f -t d --hidden --follow --exclude .git";
-    fileWidgetOptions = [ "--preview 'bat --color=always {}'" ];
+    fileWidget = {
+      command = "fd -t f -t d --hidden --follow --exclude .git";
+      options = [ "--preview 'bat --color=always {}'" ];
+    };
   };
 
   programs.fd = {
@@ -36,6 +38,7 @@
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
+    shellWrapperName = "yy";
     settings = {
       mgr = {
         show_hidden = true;
