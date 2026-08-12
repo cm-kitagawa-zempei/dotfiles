@@ -39,6 +39,12 @@
     enable = true;
     settings = {
       command_timeout = 1000;
+
+      # nodejs モジュールは毎プロンプト node --version を起動し 300ms 超かかるため無効化
+      nodejs.disabled = true;
+
+      # 巨大リポジトリでの git_status 短縮（submodule を見ない）
+      git_status.ignore_submodules = true;
     };
   };
 }
