@@ -16,6 +16,13 @@ focus_pane_right = "alt+l"
 split_vertical = "alt+n"         # zellij の Alt+n（新規ペイン）相当。右に分割
 split_horizontal = "alt+shift+n" # 下に分割
 
+# zellij move モードの hjkl 相当。隣の pane と位置を入れ替える
+# （--default-config のコメントには載っていないが 0.7.5 で有効な設定キー）
+swap_pane_left = "alt+shift+h"
+swap_pane_down = "alt+shift+j"
+swap_pane_up = "alt+shift+k"
+swap_pane_right = "alt+shift+l"
+
 # zellij pane モードの f と同じキーでフルスクリーン
 zoom = "prefix+f"
 
@@ -26,6 +33,21 @@ type = "popup"
 command = "yazi"
 width = "80%"
 height = "80%"
+
+# zellij の Alt+- / Alt++ 相当のリサイズ。
+# herdr 本体には pane の縮小操作が無いため、herdr-resize.sh が
+# shrink を「隣の pane をフォーカス中の pane に向かって広げる」ことで代用する
+[[keys.command]]
+key = "alt+minus"
+type = "shell"
+command = "/Users/kitagawa_zempei/.config/herdr/herdr-resize.sh shrink"
+description = "focused pane を縮小（zellij Alt+- 相当）"
+
+[[keys.command]]
+key = "alt+;"
+type = "shell"
+command = "/Users/kitagawa_zempei/.config/herdr/herdr-resize.sh grow"
+description = "focused pane を拡大（zellij Alt++ 相当）"
 
 [ui]
 agent_panel_sort = "spaces"

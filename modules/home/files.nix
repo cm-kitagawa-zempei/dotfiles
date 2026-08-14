@@ -25,6 +25,10 @@
 
     # herdr（変更後は herdr server reload-config で反映）
     "herdr/config.toml".source = ../../config/herdr/config.toml;
+    "herdr/herdr-resize.sh" = {
+      source = ../../config/herdr/herdr-resize.sh;
+      executable = true;
+    };
   };
 
   # zellij は config.kdl を監視して既存セッションにも変更を反映するが、
