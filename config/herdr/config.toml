@@ -5,8 +5,7 @@
 onboarding = false
 
 [keys]
-# プレフィックスはデフォルトの Ctrl+B のまま
-# （zellij の Ctrl Space と入口を分けて「今どちらにいるか」を明確にする）
+prefix = "ctrl+space"
 
 # zellij の Alt 系ダイレクト操作（プレフィックス不要）
 focus_pane_left = "alt+h"
