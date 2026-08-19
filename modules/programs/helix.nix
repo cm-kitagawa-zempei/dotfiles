@@ -91,12 +91,15 @@
           # Arto (GUI, Homebrew cask 管理: arto-app/tap/arto) で Markdown を
           # プレビュー。Nix だと毎回ソースビルドになるため cask にしている。
           # 単一インスタンスなので2回目以降は既存ウィンドウにルーティング
-          # される。初回起動がブロックしないようバックグラウンドで起動する
+          # される。初回起動がブロックしないようバックグラウンドで起動する。
+          # CLI 直接実行は LaunchServices を経由せず、macOS の cooperative
+          # activation に前面化を却下されることがあるため open -a で確実に
+          # 前面化する
           #   m   = 現在のファイルのみ
           #   S-m = workspace root（Git ルート、リポジトリ外は cwd）を
           #         エクスプローラーのルートにして現在のファイルを開く
-          space.m = ":sh nohup arto \"$(realpath '%{buffer_name}')\" > /dev/null 2>&1 &";
-          space.S-m = ":sh nohup arto --directory=\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" \"$(realpath '%{buffer_name}')\" > /dev/null 2>&1 &";
+          space.m = ":sh nohup arto \"$(realpath '%{buffer_name}')\" > /dev/null 2>&1 & open -a Arto";
+          space.S-m = ":sh nohup arto --directory=\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" \"$(realpath '%{buffer_name}')\" > /dev/null 2>&1 & open -a Arto";
           A-c = "copy_selection_on_prev_line";
         };
         select = {
