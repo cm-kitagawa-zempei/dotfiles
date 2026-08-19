@@ -18,8 +18,6 @@
     ghq
     zellij
     herdr # コーディングエージェント用マルチプレクサ（通常作業は zellij）
-    gh-markdown-preview
-    glow
     uv
     sqlfluff
     hunkPackage

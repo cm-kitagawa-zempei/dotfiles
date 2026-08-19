@@ -1,40 +1,34 @@
 #!/usr/bin/env bash
 #
-# yazi-picker.sh - Helix + Zellij + Yazi ファイルピッカー
+# yazi-picker.sh - Helix のペイン内で yazi を全画面実行するファイルピッカー
 #
-# Originai: https://yazi-rs.github.io/docs/tips#helix-with-zellij
-# 
-# Usage: yazi-picker.sh <command> [start_path]
-#   command:    Helixコマンド (open, vsplit, hsplit)
-#   start_path: yaziの開始パス (省略時: カレントディレクトリ)
+# lazygit (C-l) と同じ :insert-output 方式で、Helix が使っている端末ごと
+# yazi に明け渡す。多重化ツール（herdr / zellij）に依存しない。
+# 選択結果は固定パスの chooser ファイル経由で keybind 側の :open に渡す。
 #
-# Helixから呼び出す例:
-#   :sh zellij run -f -- bash ~/.config/helix/yazi-picker.sh open '%{buffer_name}'
+# Original: https://yazi-rs.github.io/docs/tips#helix
+#
+# Helix keybind での使い方:
+#   C-y = [
+#     ":insert-output bash ~/.config/helix/yazi-picker.sh '%{buffer_name}'",
+#     ":open %sh{bash ~/.config/helix/yazi-picker.sh --paths}",
+#     ":redraw",
+#   ]
 
 set -euo pipefail
 
-readonly helix_command="${1:-open}"
-readonly start_path="${2:-.}"
+chooser_file="${XDG_CACHE_HOME:-$HOME/.cache}/helix-yazi-chooser"
 
-# 一時ファイルを作成し、終了時に必ず削除
-chooser_file=$(mktemp)
-trap 'rm -f "$chooser_file"' EXIT
-
-# yaziをchooserモードで起動
-yazi "$start_path" --chooser-file="$chooser_file"
-
-# 選択されたパスを読み取る（末尾改行なしでも対応）
-paths=""
-while IFS= read -r line || [[ -n "$line" ]]; do
-	paths+="$(printf "%q " "$line")"
-done < "$chooser_file"
-
-# フローティングペインを閉じる
-zellij action toggle-floating-panes
-
-# ファイルが選択されていればHelixで開く
-if [[ -n "$paths" ]]; then
-	zellij action write 27  # Escape
-	zellij action write-chars ":${helix_command} ${paths}"
-	zellij action write 13  # Enter
+# --paths: 選択されたパスを出力する。%sh{} の展開結果は丸ごと :open の
+# 1引数になる（スペースがあっても分割されない）ため、クォートは不要。
+# 逆に複数選択は渡せないので先頭の1件のみ開く
+if [[ "${1:-}" == "--paths" ]]; then
+	[[ -s "$chooser_file" ]] || exit 0
+	head -n 1 "$chooser_file"
+	exit 0
 fi
+
+rm -f "$chooser_file"
+yazi "${1:-.}" --chooser-file="$chooser_file" || true
+# yazi が抜けた後、helix 向けに alternate screen と bracketed paste を復元する
+printf '\033[?1049h\033[?2004h' > /dev/tty

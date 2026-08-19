@@ -81,12 +81,22 @@
             ":redraw"
             ":reload-all"
           ];
+          # lazygit と同じ :insert-output 方式でペイン内に yazi を全画面表示
           C-y = [
-            ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open '%{buffer_name}'"
+            ":insert-output bash ~/.config/helix/yazi-picker.sh '%{buffer_name}'"
+            ":open %sh{bash ~/.config/helix/yazi-picker.sh --paths}"
+            ":redraw"
           ];
           space.c = ":sh echo '%{buffer_name}' | pbcopy";
-          space.m = ":sh zellij run --floating -- gh-markdown-preview '%{buffer_name}'";
-          space.S-m = ":sh zellij run --floating -c -x 10%% -y 10%% --width 80%% --height 80%% -- glow -p '%{buffer_name}'";
+          # Arto (GUI, Homebrew cask 管理: arto-app/tap/arto) で Markdown を
+          # プレビュー。Nix だと毎回ソースビルドになるため cask にしている。
+          # 単一インスタンスなので2回目以降は既存ウィンドウにルーティング
+          # される。初回起動がブロックしないようバックグラウンドで起動する
+          #   m   = 現在のファイルのみ
+          #   S-m = workspace root（Git ルート、リポジトリ外は cwd）を
+          #         エクスプローラーのルートにして現在のファイルを開く
+          space.m = ":sh nohup arto \"$(realpath '%{buffer_name}')\" > /dev/null 2>&1 &";
+          space.S-m = ":sh nohup arto --directory=\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" \"$(realpath '%{buffer_name}')\" > /dev/null 2>&1 &";
           A-c = "copy_selection_on_prev_line";
         };
         select = {
