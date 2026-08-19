@@ -41,6 +41,10 @@
     GRANTED_DISABLE_CONFIG_UPDATE = "true";
   };
 
+  # GUI アプリ発の非インタラクティブシェル(zsh -lc)でも
+  # claude 等が見つかるよう、ログインシェルの PATH に含める
+  home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+
   imports = [
     ./modules/home/packages.nix
     ./modules/home/files.nix
