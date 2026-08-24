@@ -54,3 +54,7 @@ agent_panel_sort = "spaces"
 [experimental]
 # プレフィックスモード中だけ IME を ASCII 配列へ切り替える（macOS 専用）
 switch_ascii_input_source_in_prefix = true
+# terminal-code (tode) は VS Code の画面を kitty graphics で描画するため必須。
+# tode 側にも自動で有効化する処理があるが、config.toml が Nix 管理の
+# read-only symlink だと書き込みに失敗し、例外も握りつぶされるので明示的に指定する。
+kitty_graphics = true

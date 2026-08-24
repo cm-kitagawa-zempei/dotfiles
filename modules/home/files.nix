@@ -23,7 +23,9 @@
       executable = true;
     };
 
-    # herdr（変更後は herdr server reload-config で反映）
+    # herdr は本体を Nix 管理外（公式インストーラ + herdr update）に置き、
+    # 設定ファイルのみここで管理する。理由は AGENTS.md「Nix 管理外のツール」を参照。
+    # 変更後は herdr server reload-config で反映
     "herdr/config.toml".source = ../../config/herdr/config.toml;
     "herdr/herdr-resize.sh" = {
       source = ../../config/herdr/herdr-resize.sh;

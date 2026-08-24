@@ -12,6 +12,17 @@
 - **段階的な移行**: Homebrewで管理していたツールを順次Nixへ移行中
 - **用途別の最小限分割**: `modules/`で用途別に分割し、見通しと保守性を確保
 
+### Nix 管理外のツール
+
+原則すべて Nix で管理しますが、次のツールは意図的に管理外に置いています。
+`modules/home/packages.nix` へ戻さないでください。
+
+| ツール | 管理方法 | 理由 |
+|--------|----------|------|
+| `herdr` | 公式インストーラ (`curl -fsSL https://herdr.dev/install.sh \| sh`) + `herdr update` | リリース追従が速く、nixpkgs の反映待ちで数世代遅れる。terminal-code (`tode`) の pixel mouse / kitty graphics 対応が 0.8.2 で入った際、nixpkgs 側は 0.8.0 のままだった |
+
+設定ファイル自体は Nix 管理を続けます（herdr なら `config/herdr/` → `modules/home/files.nix`）。
+
 ## ディレクトリ構成
 
 ```
