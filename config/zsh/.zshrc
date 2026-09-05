@@ -185,6 +185,14 @@ alias gs='git status'
 # snowsql
 alias snowsql=/Applications/SnowSQL.app/Contents/MacOS/snowsql
 
+#compdef snow
+
+_snow_completion() {
+  eval $(env _TYPER_COMPLETE_ARGS="${words[1,$CURRENT]}" _SNOW_COMPLETE=complete_zsh snow)
+}
+
+compdef _snow_completion snow
+
 # ============================================================================
 # 設定完了
 # ============================================================================
