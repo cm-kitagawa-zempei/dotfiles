@@ -39,6 +39,7 @@
     pre-commit
     aws-vault
     python3Packages.cfn-lint
+    tmux # herdr-toggle-popup プラグインが popup シェルの維持に使う
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

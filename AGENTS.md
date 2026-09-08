@@ -23,6 +23,13 @@
 
 設定ファイル自体は Nix 管理を続けます（herdr なら `config/herdr/` → `modules/home/files.nix`）。
 
+herdr のプラグインも本体と同じく Nix 管理外で、新しいマシンでは手動で入れます。
+設定ファイル（`config/herdr/toggle-popup.toml`）とキーバインドは Nix 管理です。
+
+```bash
+herdr plugin install maro114510/herdr-toggle-popup   # alt+f で popup シェルを開閉。tmux が必要
+```
+
 ## ディレクトリ構成
 
 ```

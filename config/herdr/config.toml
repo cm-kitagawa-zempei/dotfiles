@@ -33,6 +33,18 @@ command = "yazi"
 width = "80%"
 height = "80%"
 
+# zellij の Alt+f（ToggleFloatingPanes）相当。tmux-toggle-popup 風に
+# シェルを 1 キーで開閉する。閉じても tmux セッションが残るので状態が保たれる。
+# プラグイン本体は Nix 管理外なので、初回のみ手動でインストールする:
+#   herdr plugin install maro114510/herdr-toggle-popup
+# プラグイン側の設定（scope / popup_size）は
+# config/herdr/toggle-popup.toml → plugins/config/maro114510.toggle-popup/config.toml
+[[keys.command]]
+key = "alt+p"
+type = "plugin_action"
+command = "maro114510.toggle-popup.toggle-shell"
+description = "popup シェルの開閉"
+
 # zellij の Alt+- / Alt++ 相当のリサイズ。
 # herdr 本体には pane の縮小操作が無いため、herdr-resize.sh が
 # shrink を「隣の pane をフォーカス中の pane に向かって広げる」ことで代用する

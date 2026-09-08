@@ -1,0 +1,14 @@
+# herdr-toggle-popup プラグインの設定
+# https://github.com/maro114510/herdr-toggle-popup
+# 配置先: ~/.config/herdr/plugins/config/maro114510.toggle-popup/config.toml
+# キーバインド（alt+f）は config.toml 側で定義している。
+
+# popup の共有単位。
+#   省略 / "workspace" : ワークスペースごとに独立した popup
+#   "directory"        : フォーカス中 pane の cwd が同じなら別ワークスペースでも同じ popup
+#   "tab"              : ワークスペース + タブごとに独立
+# scope = "directory"
+
+# 開いた直後の popup サイズ調整。herdr には絶対サイズ指定が無いので
+# "direction:amount:count" を空白区切りで並べ、その回数だけ相対 resize する。
+# popup_size.shell = "right:0.5:3 down:0.5:3"

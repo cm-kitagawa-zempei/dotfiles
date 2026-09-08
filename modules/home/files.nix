@@ -31,6 +31,10 @@
       source = ../../config/herdr/herdr-resize.sh;
       executable = true;
     };
+    # herdr-toggle-popup プラグインの設定。プラグイン本体は
+    # `herdr plugin install maro114510/herdr-toggle-popup` で別途入れる
+    "herdr/plugins/config/maro114510.toggle-popup/config.toml".source =
+      ../../config/herdr/toggle-popup.toml;
   };
 
   # zellij は config.kdl を監視して既存セッションにも変更を反映するが、
