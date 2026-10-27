@@ -1,10 +1,10 @@
-import { Action, ActionPanel, environment, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, environment, getPreferenceValues, Icon, List, openCommandPreferences } from "@raycast/api";
 import { showFailureToast, useLocalStorage } from "@raycast/utils";
 import { spawn } from "node:child_process";
 import { existsSync, readdirSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { basename, join } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { useEffect, useMemo, useState } from "react";
 import { bump, frecency, History } from "./frecency";
 import { matchTerms, parseQuery, Target } from "./fuzzy";
@@ -15,7 +15,10 @@ const MAX_RESULTS = 100;
 // 一致度に足す frecency の重み。log を取り、よく使うものが一致度の差を覆しすぎないようにする
 const FRECENCY_WEIGHT = 30;
 
+// 設定でマウント先が指定されていればそれを使い、なければ CloudStorage から prefix で探す
 function findDriveRoot(prefix: string): string | undefined {
+  const { driveRoot } = getPreferenceValues<{ driveRoot?: string }>();
+  if (driveRoot) return existsSync(driveRoot) ? resolve(driveRoot) : undefined;
   try {
     const dir = readdirSync(CLOUD_STORAGE).find((n) => n.startsWith(prefix));
     return dir ? join(CLOUD_STORAGE, dir) : undefined;
@@ -117,7 +120,12 @@ export function DriveSearch({ label, prefix }: { label: string; prefix: string }
         <List.EmptyView
           icon={Icon.ExclamationMark}
           title={`${label} のマウントが見つかりません`}
-          description={`${CLOUD_STORAGE} に ${prefix}* がありません`}
+          description={`${CLOUD_STORAGE} に ${prefix}* がありません。拡張機能の設定でマウント先を指定することもできます`}
+          actions={
+            <ActionPanel>
+              <Action title="Open Extension Preferences" icon={Icon.Gear} onAction={openCommandPreferences} />
+            </ActionPanel>
+          }
         />
       </List>
     );

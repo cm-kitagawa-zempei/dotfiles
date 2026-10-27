@@ -44,7 +44,7 @@ home-manager switch --flake . --show-trace
 - `modules/programs/git.nix` — lazygit / delta / gh
 - `modules/programs/helix.nix` — Helix エディタ（LSP / 言語 / テーマ設定含む）
 - `config/` — Nix外の設定ファイル（zsh, zellij, helix scripts）。`modules/home/files.nix`経由でリンクされる
-- `config/raycast/extensions/drive-search/` — Box / Google Drive を曖昧検索する自作 Raycast 拡張。Nix 管理外で、`pnpm install && pnpm run dev` で Raycast に登録する
+- `config/raycast/extensions/drive-search/` — Box / Google Drive を曖昧検索する自作 Raycast 拡張。Nix 管理外で、`pnpm install && pnpm run dev` で Raycast に登録する。社内配布用に README / LICENSE を同梱しており、このディレクトリ単体で公開リポジトリにできる
 
 ## Conventions
 

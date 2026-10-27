@@ -17,13 +17,31 @@
       "name": "search-box",
       "title": "Search Box",
       "description": "Fuzzy search files in Box Drive.",
-      "mode": "view"
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "driveRoot",
+          "title": "Box Folder",
+          "description": "検索する Box のマウント先。空欄なら ~/Library/CloudStorage/Box-* を自動検出します（複数アカウントを使っている場合に指定）。",
+          "type": "directory",
+          "required": false
+        }
+      ]
     },
     {
       "name": "search-google-drive",
       "title": "Search Google Drive",
       "description": "Fuzzy search files in Google Drive.",
-      "mode": "view"
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "driveRoot",
+          "title": "Google Drive Folder",
+          "description": "検索する Google Drive のマウント先。空欄なら ~/Library/CloudStorage/GoogleDrive-* を自動検出します（複数アカウントを使っている場合に指定）。",
+          "type": "directory",
+          "required": false
+        }
+      ]
     }
   ],
   "dependencies": {
