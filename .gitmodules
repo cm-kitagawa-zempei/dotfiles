@@ -1,0 +1,4 @@
+[submodule "config/raycast/extensions/drive-search"]
+	path = config/raycast/extensions/drive-search
+	url = https://github.com/cm-kitagawa-zempei/raycast-drive-search.git
+	branch = main
