@@ -73,13 +73,13 @@
             ":sh macism com.apple.keylayout.ABC"
             "normal_mode"
           ];
+          # lazygit で e を押したファイルを、この Helix で開く
           C-l = [
             ":write-all"
-            ":new"
-            ":insert-output lazygit"
-            ":buffer-close!"
-            ":redraw"
+            ":insert-output bash ~/.config/helix/lazygit-picker.sh"
             ":reload-all"
+            ":open %sh{bash ~/.config/helix/lazygit-picker.sh --paths}"
+            ":redraw"
           ];
           # lazygit と同じ :insert-output 方式でペイン内に yazi を全画面表示
           C-y = [

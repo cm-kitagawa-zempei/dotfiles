@@ -18,6 +18,10 @@
 
   xdg.configFile = {
     # Helix script
+    "helix/lazygit-picker.sh" = {
+      source = ../../config/helix/lazygit-picker.sh;
+      executable = true;
+    };
     "helix/yazi-picker.sh" = {
       source = ../../config/helix/yazi-picker.sh;
       executable = true;
