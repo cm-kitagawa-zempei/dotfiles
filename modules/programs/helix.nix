@@ -1,5 +1,31 @@
 { pkgs, ... }:
 
+let
+  # dbt のマクロ・ref・source などへの定義ジャンプ用 LSP。nixpkgs に無いためソースからビルドする
+  dbt-language-server = pkgs.buildGoModule rec {
+    pname = "dbt-language-server";
+    version = "0.4.2";
+    src = pkgs.fetchFromGitHub {
+      owner = "j-clemons";
+      repo = "dbt-language-server";
+      rev = "v${version}";
+      hash = "sha256-U2rGAfBZ1xcJfKUeQeX/XnXXVKaQYHhQWd4K2g6KUGo=";
+    };
+    vendorHash = "sha256-0PWAY2CeBtaRqkN93ZWeVSynaMW8E9zJwUxI5CzC1mE=";
+    # v0.4.2 の不具合修正
+    # - CRLF のファイルで行番号がずれ、範囲外アクセスで LSP が落ちる
+    # - Helix が送る UTF-16 の位置をバイト位置として扱い、日本語を含む行でずれる
+    # - snapshot への ref と、{% set x = m() %} など {{ 直後以外のマクロ呼び出しを解決できない
+    patches = [ ./patches/dbt-language-server.patch ];
+    ldflags = [
+      "-s"
+      "-w"
+      "-X github.com/j-clemons/dbt-language-server/version.Version=${version}"
+    ];
+    # テストが testdata の dbt プロジェクトに依存するためビルド時は実行しない
+    doCheck = false;
+  };
+in
 {
   programs.helix = {
     enable = true;
@@ -9,6 +35,7 @@
       pkgs.pyright
       pkgs.ruff
       pkgs.marksman
+      dbt-language-server
     ];
 
     # config.toml
@@ -147,8 +174,29 @@
           };
           auto-format = true;
         }
+        # dbt プロジェクトでは dbt_project.yml のあるディレクトリを LSP のルートにする
+        {
+          name = "sql";
+          roots = [ "dbt_project.yml" ];
+          language-servers = [ "dbt-language-server" ];
+        }
+        {
+          name = "yaml";
+          roots = [ "dbt_project.yml" ];
+          # 既定の yaml-language-server / ansible-language-server は残す
+          language-servers = [
+            "yaml-language-server"
+            "ansible-language-server"
+            "dbt-language-server"
+          ];
+        }
       ];
       language-server = {
+        dbt-language-server = {
+          command = "dbt-language-server";
+          # dbt プロジェクト以外の SQL / YAML では起動しない
+          required-root-patterns = [ "dbt_project.yml" ];
+        };
         marksman = {
           command = "marksman";
           args = [ "server" ];

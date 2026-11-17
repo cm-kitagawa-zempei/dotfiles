@@ -1,0 +1,247 @@
+diff --git a/analysis/agg_model_details.go b/analysis/agg_model_details.go
+index 1e0d675..81a598e 100644
+--- a/analysis/agg_model_details.go
++++ b/analysis/agg_model_details.go
+@@ -78,5 +78,17 @@ func (s *State) getModelDetails() (map[string]ModelDetails, map[string]Source) {
+ 			SchemaRange: lsp.Range{},
+ 		}
+ 	}
++	for k, v := range createSnapshotPathMap(s.DbtContext.ProjectRoot, s.DbtContext.ProjectYaml) {
++		if _, exists := modelMap[k]; exists {
++			continue
++		}
++		modelMap[k] = ModelDetails{
++			URI:         v,
++			ProjectName: s.DbtContext.ProjectYaml.ProjectName.Value,
++			Description: "Snapshot",
++			SchemaURI:   "",
++			SchemaRange: lsp.Range{},
++		}
++	}
+ 	return modelMap, sourceMap
+ }
+diff --git a/analysis/parse_dbt_yaml.go b/analysis/parse_dbt_yaml.go
+index 3588096..ab5cffe 100644
+--- a/analysis/parse_dbt_yaml.go
++++ b/analysis/parse_dbt_yaml.go
+@@ -78,6 +78,7 @@ type DbtProjectYaml struct {
+ 	ModelPaths          AnnotatedField[[]string] `yaml:"model-paths"`
+ 	SeedPaths           AnnotatedField[[]string] `yaml:"seed-paths"`
+ 	MacroPaths          AnnotatedField[[]string] `yaml:"macro-paths"`
++	SnapshotPaths       AnnotatedField[[]string] `yaml:"snapshot-paths"`
+ 	PackagesInstallPath AnnotatedField[string]   `yaml:"packages-install-path"`
+ 	DocsPaths           AnnotatedField[[]string] `yaml:"docs-paths"`
+ 	Vars                AnnotatedMap             `yaml:"vars"`
+@@ -124,6 +125,11 @@ func parseDbtProjectYaml(projectRoot string) DbtProjectYaml {
+ 			projYaml.MacroPaths.Value = []string{"macros"}
+ 		}
+ 	}
++	if projYaml.SnapshotPaths.Value == nil || len(projYaml.SnapshotPaths.Value) == 0 {
++		if availableDirs["snapshots"] == 1 {
++			projYaml.SnapshotPaths.Value = []string{"snapshots"}
++		}
++	}
+ 	if projYaml.PackagesInstallPath.Value == "" {
+ 		if availableDirs["dbt_packages"] == 1 {
+ 			projYaml.PackagesInstallPath.Value = "dbt_packages"
+diff --git a/analysis/parse_models.go b/analysis/parse_models.go
+index 688faa7..83550fa 100644
+--- a/analysis/parse_models.go
++++ b/analysis/parse_models.go
+@@ -2,6 +2,8 @@ package analysis
+ 
+ import (
+ 	"log"
++	"path/filepath"
++	"regexp"
+ 
+ 	"github.com/j-clemons/dbt-language-server/util"
+ )
+@@ -16,6 +18,28 @@ func createModelPathMap(projectRoot string, projYaml DbtProjectYaml) map[string]
+ 	return files
+ }
+ 
++// snapshot は {% snapshot <name> %} ブロックの名前で ref される
++func createSnapshotPathMap(projectRoot string, projYaml DbtProjectYaml) map[string]string {
++	snapshotRegex := regexp.MustCompile(`\{%-?\s*snapshot\s+(\w+)`)
++	snapshots := make(map[string]string)
++	for _, p := range projYaml.SnapshotPaths.Value {
++		paths, err := util.WalkFilepath(filepath.Join(projectRoot, p), ".sql")
++		if err != nil {
++			continue
++		}
++		for _, path := range paths {
++			contents, err := util.ReadFileContents(path)
++			if err != nil {
++				continue
++			}
++			for _, m := range snapshotRegex.FindAllStringSubmatch(contents, -1) {
++				snapshots[m[1]] = path
++			}
++		}
++	}
++	return snapshots
++}
++
+ func createSeedPathMap(projectRoot string, projYaml DbtProjectYaml) map[string]string {
+ 	files, err := util.CreateFileNameMap([]string{".csv"}, projectRoot, projYaml.SeedPaths.Value)
+ 	if err != nil {
+diff --git a/analysis/parser/lexer.go b/analysis/parser/lexer.go
+index 93aa9c3..437b51b 100644
+--- a/analysis/parser/lexer.go
++++ b/analysis/parser/lexer.go
+@@ -155,7 +155,8 @@ func isDigit(ch byte) bool {
+ 
+ func (l *Lexer) skipWhitespace() {
+ 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+-		if l.ch == '\n' || l.ch == '\r' {
++		// CRLF を2行と数えないよう、\n の直前の \r は改行として扱わない
++		if l.ch == '\n' || (l.ch == '\r' && l.peekChar() != '\n') {
+ 			l.line++
+ 			l.column = -1
+ 		}
+diff --git a/analysis/parser/parser.go b/analysis/parser/parser.go
+index dea6984..7ea7123 100644
+--- a/analysis/parser/parser.go
++++ b/analysis/parser/parser.go
+@@ -241,7 +241,7 @@ func (ti *TokenIndex) FindTokenAtCursor(line, column int) (*TokenLL, error) {
+ 		return lineTokens[i].Token.Column+len(lineTokens[i].Token.Literal) > column
+ 	})
+ 
+-	if idx >= 0 &&
++	if idx >= 0 && idx < len(lineTokens) &&
+ 		column >= lineTokens[idx].Token.Column &&
+ 		column < lineTokens[idx].Token.Column+len(lineTokens[idx].Token.Literal) {
+ 		return &lineTokens[idx], nil
+diff --git a/analysis/state.go b/analysis/state.go
+index d773dcf..9c45bae 100644
+--- a/analysis/state.go
++++ b/analysis/state.go
+@@ -152,6 +152,8 @@ func (s *State) applyIncrementalChange(text string, change lsp.TextDocumentConte
+ 	if startLine >= len(lines) || endLine >= len(lines) {
+ 		return text
+ 	}
++	startChar = utf16ToByteOffset(lines[startLine], startChar)
++	endChar = utf16ToByteOffset(lines[endLine], endChar)
+ 
+ 	var result strings.Builder
+ 
+@@ -192,6 +194,60 @@ func (s *State) applyIncrementalChange(text string, change lsp.TextDocumentConte
+ 	return result.String()
+ }
+ 
++// LSP の character は UTF-16 単位で届くが、パーサの列はバイト単位なので変換する
++func utf16ToByteOffset(line string, col int) int {
++	units := 0
++	for i, r := range line {
++		if units >= col {
++			return i
++		}
++		if r >= 0x10000 {
++			units += 2
++		} else {
++			units++
++		}
++	}
++	return len(line)
++}
++
++func (s *State) toBytePosition(uri string, pos lsp.Position) lsp.Position {
++	lines := strings.Split(s.Documents[uri].Text, "\n")
++	if pos.Line < 0 || pos.Line >= len(lines) {
++		return pos
++	}
++	pos.Character = utf16ToByteOffset(lines[pos.Line], pos.Character)
++	return pos
++}
++
++// {{ の直後以外（{% set x = m() %} や 'a' ~ m() など）のマクロ呼び出しを解決する
++func (s *State) findMacroCall(uri string, tl *parser.TokenLL) (Macro, bool) {
++	tok := tl.Token
++	lines := strings.Split(s.Documents[uri].Text, "\n")
++	if tok.Line < 0 || tok.Line >= len(lines) {
++		return Macro{}, false
++	}
++	line := lines[tok.Line]
++	end := tok.Column + len(tok.Literal)
++	if end > len(line) || !strings.HasPrefix(strings.TrimLeft(line[end:], " \t"), "(") {
++		return Macro{}, false
++	}
++	prev := tl.PrevToken
++	if prev != nil && prev.Token.Type == parser.DOT && prev.PrevToken != nil {
++		m, ok := s.DbtContext.MacroDetailMap[Package(prev.PrevToken.Token.Literal)][tok.Literal]
++		return m, ok
++	}
++	project := Package(s.DbtContext.ProjectYaml.ProjectName.Value)
++	if m, ok := s.DbtContext.MacroDetailMap[project][tok.Literal]; ok {
++		return m, true
++	}
++	for _, macros := range s.DbtContext.MacroDetailMap {
++		if m, ok := macros[tok.Literal]; ok {
++			return m, true
++		}
++	}
++	return Macro{}, false
++}
++
+ func (s *State) SaveDocument(uri string) {
+ 	s.refreshDbtContext(s.LspClientRootPath)
+ }
+@@ -207,6 +263,10 @@ func (s *State) Hover(id int, uri string, position lsp.Position) lsp.HoverRespon
+ 		},
+ 	}
+ 
++	if _, ok := s.Documents[uri]; !ok {
++		return response
++	}
++	position = s.toBytePosition(uri, position)
+ 	cursorTokenLL, err := s.Documents[uri].Tokens.FindTokenAtCursor(position.Line, position.Character)
+ 	if err != nil {
+ 		return response
+@@ -276,7 +336,11 @@ func (s *State) Definition(id int, uri string, position lsp.Position) lsp.Defini
+ 		},
+ 	}
+ 
+-	cursorTokenLL, err := s.Documents[uri].Tokens.FindTokenAtCursor(position.Line, position.Character)
++	if _, ok := s.Documents[uri]; !ok {
++		return response
++	}
++	bytePos := s.toBytePosition(uri, position)
++	cursorTokenLL, err := s.Documents[uri].Tokens.FindTokenAtCursor(bytePos.Line, bytePos.Character)
+ 	if err != nil {
+ 		return response
+ 	}
+@@ -345,6 +409,9 @@ func (s *State) Definition(id int, uri string, position lsp.Position) lsp.Defini
+ 					Character: defToken.Column,
+ 				},
+ 			}
++		} else if macro, ok := s.findMacroCall(uri, cursorTokenLL); ok {
++			response.Result.URI = "file://" + macro.URI
++			response.Result.Range = macro.Range
+ 		}
+ 	}
+ 
+@@ -364,7 +431,8 @@ func (s *State) GoToSchema(id int, uri string, position lsp.Position) lsp.Execut
+ 	doc, exists := s.Documents[uri]
+ 	if exists && doc.Tokens != nil {
+ 		// First, check if cursor is on a REF token
+-		cursorTokenLL, err := doc.Tokens.FindTokenAtCursor(position.Line, position.Character)
++		bytePos := s.toBytePosition(uri, position)
++		cursorTokenLL, err := doc.Tokens.FindTokenAtCursor(bytePos.Line, bytePos.Character)
+ 		if err == nil {
+ 			cursorToken := cursorTokenLL.Token
+ 
+@@ -417,9 +485,12 @@ func (s *State) TextDocumentCompletion(id int, uri string, position lsp.Position
+ 
+ 	fileContents := s.Documents[uri].Text
+ 	lines := strings.Split(fileContents, "\n")
++	if position.Line < 0 || position.Line >= len(lines) {
++		return lsp.CompletionResponse{Response: lsp.Response{RPC: "2.0", ID: &id}, Result: items}
++	}
+ 	lineText := lines[position.Line]
+ 
+-	cursorOffset := int(position.Character)
++	cursorOffset := utf16ToByteOffset(lineText, int(position.Character))
+ 	textBeforeCursor := lineText[:cursorOffset]
+ 	textAfterCursor := lineText[cursorOffset:]
+ 
