@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -26,6 +31,10 @@
       source = ../../config/helix/yazi-picker.sh;
       executable = true;
     };
+    # dbt の SQL 用ハイライト（modules/programs/helix.nix の dbt 言語）。
+    # Helix の同梱 grammar に twig は無いため nixpkgs のビルド済み parser を置く
+    "helix/runtime/queries/dbt".source = ../../config/helix/runtime/queries/dbt;
+    "helix/runtime/grammars/twig.so".source = "${pkgs.tree-sitter-grammars.tree-sitter-twig}/parser";
 
     # herdr は本体を Nix 管理外（公式インストーラ + herdr update）に置き、
     # 設定ファイルのみここで管理する。理由は AGENTS.md「Nix 管理外のツール」を参照。

@@ -174,6 +174,34 @@ in
           };
           auto-format = true;
         }
+        # dbt のモデルやマクロは Jinja を含むため、SQL の grammar だけでは
+        # '{{ x | replace("'", "''") }}' のような式でハイライトが崩れる。
+        # Jinja と同じ {{ }} / {% %} 構文の Twig の grammar で解析し、
+        # タグ以外の部分に SQL をインジェクションする
+        # （クエリは config/helix/runtime/queries/dbt/）
+        {
+          name = "dbt";
+          scope = "source.dbt";
+          grammar = "twig";
+          file-types = map (dir: { glob = "${dir}/**/*.sql"; }) [
+            "models"
+            "macros"
+            "snapshots"
+            "tests"
+            "analyses"
+          ];
+          roots = [ "dbt_project.yml" ];
+          language-servers = [ "dbt-language-server" ];
+          comment-token = "--";
+          block-comment-tokens = {
+            start = "{#";
+            end = "#}";
+          };
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
         # dbt プロジェクトでは dbt_project.yml のあるディレクトリを LSP のルートにする
         {
           name = "sql";
