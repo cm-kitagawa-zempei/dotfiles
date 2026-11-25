@@ -45,6 +45,7 @@ home-manager switch --flake . --show-trace
 - `modules/programs/helix.nix` — Helix エディタ（LSP / 言語 / テーマ設定含む）
 - `config/` — Nix外の設定ファイル（zsh, zellij, helix scripts）。`modules/home/files.nix`経由でリンクされる
 - `config/raycast/extensions/drive-search/` — Box / Google Drive を曖昧検索する自作 Raycast 拡張。公開リポジトリ [cm-kitagawa-zempei/raycast-drive-search](https://github.com/cm-kitagawa-zempei/raycast-drive-search) を git submodule として取り込んでいる。変更は submodule 側にコミット・push し、dotfiles では `git submodule update --remote` で参照先を更新する。Nix 管理外で、`pnpm install && pnpm run dev` で Raycast に登録する
+- `config/raycast/extensions/kot-slack/` — KING OF TIME の打刻に合わせて勤務場所ごとのメッセージを Slack に投稿する自作 Raycast 拡張。submodule ではなくこのリポジトリで直接管理する。Nix 管理外で、`pnpm install && pnpm run dev` で Raycast に登録する
 
 ## Conventions
 

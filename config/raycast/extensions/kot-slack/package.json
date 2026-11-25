@@ -1,0 +1,100 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "kot-slack",
+  "title": "KoT Slack",
+  "description": "KING OF TIME の打刻に合わせて、勤務場所ごとのメッセージを Slack に投稿し、ステータスを変更します。",
+  "icon": "extension-icon.png",
+  "author": "cm-kitagawa-zempei",
+  "platforms": [
+    "macOS"
+  ],
+  "categories": [
+    "Productivity"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "punch",
+      "title": "打刻",
+      "subtitle": "KoT + Slack",
+      "description": "出勤・休憩・再開・退勤のメッセージを選んで Slack に投稿し、Myレコーダーを開きます。",
+      "keywords": [
+        "kot",
+        "dakoku",
+        "shukkin",
+        "taikin"
+      ],
+      "mode": "view"
+    },
+    {
+      "name": "settings",
+      "title": "打刻メッセージの設定",
+      "subtitle": "KoT + Slack",
+      "description": "打刻のときに Slack へ投稿するメッセージと、変更するステータスを設定します。",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "slackToken",
+      "title": "Slack トークン",
+      "description": "メッセージ投稿に使うユーザートークン（xoxp-...）。chat:write スコープが必要です。複数ワークスペースに投稿する場合はスペース区切りで、チャンネルと同じ順に並べます。",
+      "type": "password",
+      "required": true
+    },
+    {
+      "name": "slackChannel",
+      "title": "投稿先チャンネル",
+      "description": "チャンネル名またはチャンネル ID。複数ある場合はスペース区切り。",
+      "type": "textfield",
+      "placeholder": "#times_example",
+      "required": true
+    },
+    {
+      "name": "statusEnabled",
+      "title": "Slack ステータス",
+      "label": "打刻に合わせてステータスを変更する",
+      "description": "トークンに users.profile:write スコープが必要です。",
+      "type": "checkbox",
+      "default": false,
+      "required": false
+    },
+    {
+      "name": "statusToken",
+      "title": "ステータス用トークン",
+      "description": "空欄なら Slack トークンを使います。複数ワークスペースのステータスを変える場合はスペース区切り。",
+      "type": "password",
+      "required": false
+    },
+    {
+      "name": "openRecorder",
+      "title": "Myレコーダー",
+      "label": "投稿後に Myレコーダーを開く",
+      "description": "Slack への投稿が終わったら、打刻用に Myレコーダーをブラウザで開きます。",
+      "type": "checkbox",
+      "default": true,
+      "required": false
+    },
+    {
+      "name": "recorderUrl",
+      "title": "Myレコーダーの URL",
+      "description": "普段使っている Myレコーダーの URL（s2 / s3 / s4、recorder / recorder2 の違いがあります）。",
+      "type": "textfield",
+      "default": "https://s2.ta.kingoftime.jp/independent/recorder/personal/",
+      "required": false
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^2.9.0",
+    "@raycast/utils": "^2.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.17",
+    "@types/react": "19.0.10",
+    "typescript": "^5.9.0"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop"
+  }
+}
